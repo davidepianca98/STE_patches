@@ -38,3 +38,4 @@ cd ../..
 echo "Applying system_netd patch"
 cp patches/system_netd.patch system_netd.patch
 git apply system_netd.patch
+rm system_netd.patch
