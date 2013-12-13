@@ -5,6 +5,7 @@ rm -rf frameworks/native
 rm -rf hardware/libhardware
 rm -rf hardware/libhardware_legacy
 rm -rf system/netd
+rm -rf packages/apps/Phone
 
 repo sync
 
