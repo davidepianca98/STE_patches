@@ -12,6 +12,7 @@ echo "Apllying Oliver patches - android_frameworks_av"
 cp frameworks_av.patch frameworks/av/frameworks_av.patch
 cd frameworks/av
 git apply frameworks_av.patch
+rm frameworks_av.patch
 cd ../..
 
 echo ""
@@ -27,6 +28,7 @@ echo ""
 cp hardware_libhardware_legacy.patch hardware/libhardware_legacy/hardware_libhardware_legacy.patch
 cd hardware/libhardware_legacy
 git apply hardware_libhardware_legacy.patch
+rm hardware_libhardware_legacy.patch
 cd ../..
 
 echo "Applying system_netd patch"
