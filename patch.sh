@@ -8,7 +8,7 @@ rm -rf system/netd
 
 repo sync
 
-echo "Apllying Oliver patches - android_frameworks_av"
+echo "Applying Oliver patches - android_frameworks_av"
 cp patches/frameworks_av.patch frameworks/av/frameworks_av.patch
 cd frameworks/av
 git apply frameworks_av.patch
@@ -39,3 +39,10 @@ echo "Applying system_netd patch"
 cp patches/system_netd.patch system_netd.patch
 git apply system_netd.patch
 rm system_netd.patch
+
+echo "Applying packages_apps_Phone patch"
+cp patches/packages_apps_Phone.patch packages/apps/Phone/packages_apps_Phone.patch
+cd packages/apps/Phone
+git apply packages_apps_Phone.patch
+rm packages_apps_Phone.patch
+cd ../..
