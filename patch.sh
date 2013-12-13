@@ -9,7 +9,7 @@ rm -rf system/netd
 repo sync
 
 echo "Apllying Oliver patches - android_frameworks_av"
-cp frameworks_av.patch frameworks/av/frameworks_av.patch
+cp patches/frameworks_av.patch frameworks/av/frameworks_av.patch
 cd frameworks/av
 git apply frameworks_av.patch
 rm frameworks_av.patch
@@ -18,18 +18,23 @@ cd ../..
 echo ""
 
 echo "Applying Oliver patches - android_frameworks_native"
+cp patches/frameworks_native.patch frameworks_native.patch
 git apply frameworks_native.patch
+rm frameworks_native.patch
 
 echo ""
 
 echo "Applying hardware patches"
+cp patches/hardware_libhardware.patch hardware_libhardware.patch
 git apply hardware_libhardware.patch
+rm hardware_libhardware.patch
 echo ""
-cp hardware_libhardware_legacy.patch hardware/libhardware_legacy/hardware_libhardware_legacy.patch
+cp patches/hardware_libhardware_legacy.patch hardware/libhardware_legacy/hardware_libhardware_legacy.patch
 cd hardware/libhardware_legacy
 git apply hardware_libhardware_legacy.patch
 rm hardware_libhardware_legacy.patch
 cd ../..
 
 echo "Applying system_netd patch"
+cp patches/system_netd.patch system_netd.patch
 git apply system_netd.patch
