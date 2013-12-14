@@ -26,9 +26,9 @@ rm frameworks_native.patch
 echo ""
 
 echo "Applying hardware patches"
-cp patches/hardware_libhardware.patch hardware_libhardware.patch
-git apply hardware_libhardware.patch
-rm hardware_libhardware.patch
+#cp patches/hardware_libhardware.patch hardware_libhardware.patch
+#git apply hardware_libhardware.patch
+#rm hardware_libhardware.patch
 echo ""
 cp patches/hardware_libhardware_legacy.patch hardware/libhardware_legacy/hardware_libhardware_legacy.patch
 cd hardware/libhardware_legacy
