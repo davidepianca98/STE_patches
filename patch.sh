@@ -29,11 +29,18 @@ echo "Applying hardware patches"
 #cp patches/hardware_libhardware.patch hardware_libhardware.patch
 #git apply hardware_libhardware.patch
 #rm hardware_libhardware.patch
+
 echo ""
-cp patches/hardware_libhardware_legacy.patch hardware/libhardware_legacy/hardware_libhardware_legacy.patch
+
+#cp patches/hardware_libhardware_legacy.patch hardware/libhardware_legacy/hardware_libhardware_legacy.patch
+#cd hardware/libhardware_legacy
+#git apply hardware_libhardware_legacy.patch
+#rm hardware_libhardware_legacy.patch
+
+cp patches/vibrator_fix.patch hardware/libhardware_legacy/vibrator_fix.patch
 cd hardware/libhardware_legacy
-git apply hardware_libhardware_legacy.patch
-rm hardware_libhardware_legacy.patch
+git apply vibrator_fix.patch
+rm vibrator_fix.patch
 cd ../..
 
 echo "Applying packages_apps_Phone patch"
