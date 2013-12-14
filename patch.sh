@@ -36,11 +36,6 @@ git apply hardware_libhardware_legacy.patch
 rm hardware_libhardware_legacy.patch
 cd ../..
 
-echo "Applying system_netd patch"
-cp patches/system_netd.patch system_netd.patch
-git apply system_netd.patch
-rm system_netd.patch
-
 echo "Applying packages_apps_Phone patch"
 cp patches/packages_apps_Phone.patch packages/apps/Phone/packages_apps_Phone.patch
 cd packages/apps/Phone
