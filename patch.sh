@@ -41,3 +41,12 @@ cd packages/apps/Phone
 git apply packages_apps_Phone.patch
 rm packages_apps_Phone.patch
 cd ../..
+
+
+echo ""
+
+echo "Cherrypicking Oliver patches - android_system_core"
+        cd system/core
+        git fetch http://review.cyanogenmod.org/CyanogenMod/android_system_core refs/changes/34/52034/2
+        git cherry-pick FETCH_HEAD
+        cd ../..
