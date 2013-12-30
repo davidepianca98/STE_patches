@@ -272,16 +272,6 @@ index e2a3d23..8eef7fa 100644
      if (list->codecHasQuirk(
                  index, "requires-loaded-to-idle-after-allocation")) {
          quirks |= kRequiresLoadedToIdleAfterAllocation;
-@@ -983,6 +1003,9 @@ static size_t getFrameSize(
-         case OMX_COLOR_FormatYUV420Planar:
-         case OMX_COLOR_FormatYUV420SemiPlanar:
-         case OMX_TI_COLOR_FormatYUV420PackedSemiPlanar:
-+#ifdef STE_HARDWARE
-+        case OMX_STE_COLOR_FormatYUV420PackedSemiPlanarMB:
-+#endif
- #ifdef ENABLE_QC_AV_ENHANCEMENTS
-         case QOMX_COLOR_FORMATYUV420PackedSemiPlanar32m:
- #endif
 @@ -1773,6 +1796,10 @@ void OMXCodec::setComponentRole(
              "video_decoder.mpeg4", "video_encoder.mpeg4" },
          { MEDIA_MIMETYPE_VIDEO_H263,
