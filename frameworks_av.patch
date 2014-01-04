@@ -1,10 +1,10 @@
-commit fbd55300ae27fad571af7d29c7a2ca331a1c4816
-Author: OliverG96 <oliverarafo@gmail.com>
-Date:   Sun Oct 20 12:01:14 2013 +0100
+commit 0bb66a8f87916326e5a551a660acad4afaeb67d9
+Author: KINGbabasula <kingbabasula@gmail.com>
+Date:   Mon Dec 30 14:49:33 2013 +0100
 
-    av: Add support for STE multimedia - Part 1
+    Fix frameworks_av patch
     
-    Change-Id: I29d266340aad9acb69a7ad9e7d16701844621312
+    Change-Id: Ib78ab90ab96db40d90bea4577c55bd89478207df
 
 diff --git a/camera/CameraParameters.cpp b/camera/CameraParameters.cpp
 index d661a85..474f983 100644
@@ -134,10 +134,10 @@ index c750717..74db544 100644
  extern const char *MEDIA_MIMETYPE_AUDIO_AMR_NB;
  extern const char *MEDIA_MIMETYPE_AUDIO_AMR_WB;
 diff --git a/include/media/stagefright/OMXCodec.h b/include/media/stagefright/OMXCodec.h
-index f7175c4..7b78f4a 100644
+index 22d790e..dffd72b 100644
 --- a/include/media/stagefright/OMXCodec.h
 +++ b/include/media/stagefright/OMXCodec.h
-@@ -98,6 +98,10 @@ struct OMXCodec : public MediaSource,
+@@ -89,6 +89,10 @@ struct OMXCodec : public MediaSource,
      // from MediaBufferObserver
      virtual void signalBufferReturned(MediaBuffer *buffer);
  
@@ -148,7 +148,7 @@ index f7175c4..7b78f4a 100644
      enum Quirks {
          kNeedsFlushBeforeDisable              = 1,
          kWantsNALFragments                    = 2,
-@@ -119,6 +123,9 @@ struct OMXCodec : public MediaSource,
+@@ -110,6 +114,9 @@ struct OMXCodec : public MediaSource,
          kRequiresGlobalFlush                  = 0x20000000, // 2^29
          kRequiresWMAProComponent              = 0x40000000, //2^30
  #endif
@@ -159,10 +159,10 @@ index f7175c4..7b78f4a 100644
  
      struct CodecNameAndQuirks {
 diff --git a/media/libstagefright/ACodec.cpp b/media/libstagefright/ACodec.cpp
-index 37ae21f..bb45437 100644
+index ca21a4d..40eb749 100644
 --- a/media/libstagefright/ACodec.cpp
 +++ b/media/libstagefright/ACodec.cpp
-@@ -603,8 +603,12 @@ status_t ACodec::allocateOutputBuffersFromNativeWindow() {
+@@ -567,8 +567,12 @@ status_t ACodec::allocateOutputBuffersFromNativeWindow() {
              mNativeWindow.get(),
              def.format.video.nFrameWidth,
              def.format.video.nFrameHeight,
@@ -235,10 +235,10 @@ index 5d8029c..4b444af 100644
  const char *MEDIA_MIMETYPE_AUDIO_AMR_NB = "audio/3gpp";
  const char *MEDIA_MIMETYPE_AUDIO_AMR_WB = "audio/amr-wb";
 diff --git a/media/libstagefright/OMXCodec.cpp b/media/libstagefright/OMXCodec.cpp
-index e2a3d23..8eef7fa 100644
+index bfb262a..dd47942 100644
 --- a/media/libstagefright/OMXCodec.cpp
 +++ b/media/libstagefright/OMXCodec.cpp
-@@ -267,6 +267,20 @@ static int CompareSoftwareCodecsFirst(
+@@ -239,6 +239,20 @@ static int CompareSoftwareCodecsFirst(
      return 0;
  }
  
@@ -259,7 +259,7 @@ index e2a3d23..8eef7fa 100644
  // static
  void OMXCodec::findMatchingCodecs(
          const char *mime,
-@@ -383,6 +397,12 @@ uint32_t OMXCodec::getComponentQuirks(
+@@ -355,6 +369,12 @@ uint32_t OMXCodec::getComponentQuirks(
        quirks |= kInputBufferSizesAreBogus;
      }
  #endif
@@ -272,17 +272,17 @@ index e2a3d23..8eef7fa 100644
      if (list->codecHasQuirk(
                  index, "requires-loaded-to-idle-after-allocation")) {
          quirks |= kRequiresLoadedToIdleAfterAllocation;
-@@ -983,6 +1003,9 @@ static size_t getFrameSize(
+@@ -934,6 +954,9 @@ static size_t getFrameSize(
          case OMX_COLOR_FormatYUV420Planar:
          case OMX_COLOR_FormatYUV420SemiPlanar:
          case OMX_TI_COLOR_FormatYUV420PackedSemiPlanar:
 +#ifdef STE_HARDWARE
 +        case OMX_STE_COLOR_FormatYUV420PackedSemiPlanarMB:
 +#endif
- #ifdef ENABLE_QC_AV_ENHANCEMENTS
-         case QOMX_COLOR_FORMATYUV420PackedSemiPlanar32m:
- #endif
-@@ -1773,6 +1796,10 @@ void OMXCodec::setComponentRole(
+         /*
+         * FIXME: For the Opaque color format, the frame size does not
+         * need to be (w*h*3)/2. It just needs to
+@@ -1717,6 +1740,10 @@ void OMXCodec::setComponentRole(
              "video_decoder.mpeg4", "video_encoder.mpeg4" },
          { MEDIA_MIMETYPE_VIDEO_H263,
              "video_decoder.h263", "video_encoder.h263" },
@@ -293,7 +293,7 @@ index e2a3d23..8eef7fa 100644
          { MEDIA_MIMETYPE_VIDEO_VPX,
              "video_decoder.vpx", "video_encoder.vpx" },
          { MEDIA_MIMETYPE_AUDIO_RAW,
-@@ -1867,6 +1894,16 @@ status_t OMXCodec::init() {
+@@ -1809,6 +1836,16 @@ status_t OMXCodec::init() {
      CHECK_EQ((int)mState, (int)LOADED);
  
      status_t err;
@@ -310,7 +310,7 @@ index e2a3d23..8eef7fa 100644
      if (!(mQuirks & kRequiresLoadedToIdleAfterAllocation)) {
          err = mOMX->sendCommand(mNode, OMX_CommandStateSet, OMX_StateIdle);
          CHECK_EQ(err, (status_t)OK);
-@@ -1933,7 +1970,12 @@ status_t OMXCodec::allocateBuffersOnPort(OMX_U32 portIndex) {
+@@ -1875,7 +1912,12 @@ status_t OMXCodec::allocateBuffersOnPort(OMX_U32 portIndex) {
      }
  
      status_t err = OK;
@@ -323,7 +323,7 @@ index e2a3d23..8eef7fa 100644
              && portIndex == kPortIndexInput) {
          err = mOMX->storeMetaDataInBuffers(mNode, kPortIndexInput, OMX_TRUE);
          if (err != OK) {
-@@ -2133,7 +2175,11 @@ status_t OMXCodec::allocateOutputBuffersFromNativeWindow() {
+@@ -2075,7 +2117,11 @@ status_t OMXCodec::allocateOutputBuffersFromNativeWindow() {
              mNativeWindow.get(),
              def.format.video.nFrameWidth,
              def.format.video.nFrameHeight,

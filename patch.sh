@@ -4,6 +4,7 @@ rm -rf frameworks/av
 rm -rf frameworks/native
 rm -rf hardware/libhardware_legacy
 rm -rf packages/apps/Phone
+rm -rf system/core
 
 repo sync
 
@@ -40,7 +41,7 @@ cp patches/packages_apps_Phone.patch packages/apps/Phone/packages_apps_Phone.pat
 cd packages/apps/Phone
 git apply packages_apps_Phone.patch
 rm packages_apps_Phone.patch
-cd ../..
+cd ../../..
 
 
 echo ""
