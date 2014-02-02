@@ -4,10 +4,11 @@ rm -rf frameworks/av
 rm -rf frameworks/native
 rm -rf hardware/libhardware_legacy
 rm -rf packages/apps/Phone
+rm -rf system/core
 
 repo sync
 
-echo "Applying Oliver patches - android_frameworks_av"
+echo "Patching frameworks/av"
 cp patches/frameworks_av.patch frameworks/av/frameworks_av.patch
 cd frameworks/av
 git apply frameworks_av.patch
@@ -16,7 +17,7 @@ cd ../..
 
 echo ""
 
-echo "Applying Oliver patches - android_frameworks_native"
+echo "Patching frameworks/native"
 cp patches/frameworks_native.patch frameworks/native/frameworks_native.patch
 cd frameworks/native
 git apply frameworks_native.patch
@@ -45,8 +46,9 @@ cd ../..
 
 echo ""
 
-echo "Cherrypicking Oliver patches - android_system_core"
+echo "Patching system/core"
+cp patches/system_core.patch system/core/system_core.patch
 cd system/core
-git fetch http://review.cyanogenmod.org/CyanogenMod/android_system_core refs/changes/34/52034/2
-git cherry-pick FETCH_HEAD
+git apply system_core.patch
+rm system_core.patch
 cd ../..
