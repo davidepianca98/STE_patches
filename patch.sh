@@ -36,16 +36,6 @@ cd ../..
 
 echo ""
 
-echo "Applying low incall volume fix"
-cp patches/packages_apps_Phone.patch packages/apps/Phone/packages_apps_Phone.patch
-cd packages/apps/Phone
-git apply packages_apps_Phone.patch
-rm packages_apps_Phone.patch
-cd ../..
-
-
-echo ""
-
 echo "Patching system/core"
 cp patches/system_core.patch system/core/system_core.patch
 cd system/core
