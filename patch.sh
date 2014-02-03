@@ -8,6 +8,15 @@ rm -rf system/core
 
 repo sync
 
+echo "Patching frameworks/base"
+cp patches/frameworks_base.patch frameworks/base/frameworks_base.patch
+cd frameworks/base
+git apply frameworks_base.patch
+rm frameworks_base.patch
+cd ../..
+
+echo ""
+
 echo "Patching frameworks/av"
 cp patches/frameworks_av.patch frameworks/av/frameworks_av.patch
 cd frameworks/av
