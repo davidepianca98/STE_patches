@@ -1,11 +1,3 @@
-commit ca6435d625b5f2604be075c55f5f8062e20ae3a8
-Author: KINGbabasula <kingbabasula@gmail.com>
-Date:   Sat Dec 14 15:50:17 2013 +0100
-
-    Vibrator fix
-    
-    Change-Id: I0816b4acaf032efa3e72074514be7e91b943d678
-
 diff --git a/vibrator/Android.mk b/vibrator/Android.mk
 index 6f7e262..8089429 100644
 --- a/vibrator/Android.mk

@@ -1,0 +1,72 @@
+diff --git a/src/com/android/phone/PhoneUtils.java b/src/com/android/phone/PhoneUtils.java
+index 5cff2ab..d0408db 100644
+--- a/src/com/android/phone/PhoneUtils.java
++++ b/src/com/android/phone/PhoneUtils.java
+@@ -2760,4 +2760,35 @@ private static SharedPreferences getPrefs(Context context) {
+             return PreferenceManager.getDefaultSharedPreferences(context);
+         }
+     }
++    
++     /**
++     * Reset the audio stream volume to fix the low in-call volume bug.
++     *
++     * Due to a bug in the OMX system, the audio stream volume is set to 0 after it was set to it's default volume.
++     * Calling PhoneUtils.resetAudioStreamVolume() triggers the system to reset the volume.
++     *
++     * This should be called on every place where is switched between audio modes.
++     *
++     * REMARK: I think it only appears on the voice call stream, but to be sure I also do it on the bluetooth stream.
++     */
++    static void resetAudioStreamVolume() {
++        PhoneGlobals app = PhoneGlobals.getInstance();
++        AudioManager audioManager = (AudioManager) app.getSystemService(Context.AUDIO_SERVICE);
++        // determine actual streamType
++        int streamType = AudioManager.STREAM_VOICE_CALL;
++        if (app.isBluetoothHeadsetAudioOn()) {
++            streamType = AudioManager.STREAM_BLUETOOTH_SCO;
++        }
++        // determine volume and 1 level lower volume (lowest level can be 0)
++        int volume = audioManager.getStreamVolume(streamType);
++        int lowerVolume = volume - 1;
++        if (lowerVolume < 0) {
++            lowerVolume = 0;
++        }
++        log("resetAudioStreamVolume (streamType=" + streamType + ", streamVolume=" + volume + ")...");
++        // It's important to change it to another volume before restoring the original volume,
++        // otherwise the volume change will NOT be triggered!!
++        audioManager.setStreamVolume(streamType, lowerVolume, 0);
++        audioManager.setStreamVolume(streamType, volume, 0);
++    }
+ }
+diff --git a/src/com/android/phone/AudioRouter.java b/src/com/android/phone/AudioRouter.java
+index 3c8e9d3..1d136a2 100644
+--- a/src/com/android/phone/AudioRouter.java
++++ b/src/com/android/phone/AudioRouter.java
+@@ -350,6 +350,10 @@ private void updateAudioModeTo(int mode) {
+         if (doNotify) {
+             notifyListeners();
+         }
++        
++        // Fix for low in-call volume bug.
++        // Reset the audio volume stream after switching audio mode
++        PhoneUtils.resetAudioStreamVolume();
+     }
+ 
+     /**
+diff --git a/src/com/android/phone/PhoneUtils.java b/src/com/android/phone/PhoneUtils.java
+index d0408db..e47cb51 100644
+--- a/src/com/android/phone/PhoneUtils.java
++++ b/src/com/android/phone/PhoneUtils.java
+@@ -2775,8 +2775,11 @@ static void resetAudioStreamVolume() {
+         PhoneGlobals app = PhoneGlobals.getInstance();
+         AudioManager audioManager = (AudioManager) app.getSystemService(Context.AUDIO_SERVICE);
+         // determine actual streamType
++        
++        final BluetoothManager btManager = app.getBluetoothManager();
++        
+         int streamType = AudioManager.STREAM_VOICE_CALL;
+-        if (app.isBluetoothHeadsetAudioOn()) {
++        if (btManager.isBluetoothHeadsetAudioOn()) {
+             streamType = AudioManager.STREAM_BLUETOOTH_SCO;
+         }
+         // determine volume and 1 level lower volume (lowest level can be 0)

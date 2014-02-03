@@ -3,7 +3,7 @@
 rm -rf frameworks/av
 rm -rf frameworks/native
 rm -rf hardware/libhardware_legacy
-rm -rf packages/apps/Phone
+rm -rf packages/services/Telephony
 rm -rf system/core
 
 repo sync
@@ -51,3 +51,10 @@ cd system/core
 git apply system_core.patch
 rm system_core.patch
 cd ../..
+
+echo "Patching packages/services/Telephony"
+cp patches/packages_services_Telephony.patch packages/services/Telephony/packages_services_Telephony.patch
+cd packages/services/Telephony
+git apply packages_services_Telephony.patch
+rm packages_services_Telephony.patch
+cd ../../..
