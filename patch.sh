@@ -1,12 +1,14 @@
 #!/bin/bash
 
+
 rm -rf frameworks/av
+rm -rf frameworks/base
 rm -rf frameworks/native
 rm -rf hardware/libhardware_legacy
 rm -rf packages/services/Telephony
 rm -rf system/core
 
-repo sync
+repo sync -f
 
 echo "Patching frameworks/base"
 cp patches/frameworks_base.patch frameworks/base/frameworks_base.patch
