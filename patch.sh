@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/usr/bin/env bash
 
 rm -rf frameworks/av
 rm -rf frameworks/base
