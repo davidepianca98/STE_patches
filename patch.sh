@@ -8,7 +8,7 @@ rm -rf hardware/libhardware_legacy
 rm -rf packages/services/Telephony
 rm -rf system/core
 
-repo sync -f
+repo sync -c -d -f -j5
 
 echo "Patching frameworks/base"
 cp patches/frameworks_base.patch frameworks/base/frameworks_base.patch
