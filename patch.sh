@@ -19,15 +19,16 @@ fi
 
 if [ "$1" = "-c" ]
 then
+echo "Removing repos..."
 rm -rf frameworks/av
 rm -rf frameworks/base
 rm -rf frameworks/native
 rm -rf hardware/libhardware_legacy
 rm -rf packages/services/Telephony
 rm -rf system/core
-fi
-
+echo "Syncing latest changes..."
 repo sync -c -d -f -j5
+fi
 
 echo "Patching frameworks/base"
 cp patches/frameworks_base.patch frameworks/base/frameworks_base.patch
