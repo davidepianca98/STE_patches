@@ -1,14 +1,33 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
+if [ "$1" = "-u" ]
+then
+echo ""
+echo "Welcome to KINGbabasula's"
+echo "STE patching script."
+echo ""
+echo "Usage:"
+echo ""
+echo "./patch.sh"
+echo ""
+echo "Arguments:"
+echo ""
+echo "-c - Cleans your repos before patching."
+echo "-u - Shows usage."
+echo ""
+fi
 
+if [ "$1" = "-c" ]
+then
 rm -rf frameworks/av
 rm -rf frameworks/base
 rm -rf frameworks/native
 rm -rf hardware/libhardware_legacy
 rm -rf packages/services/Telephony
 rm -rf system/core
+fi
 
-repo sync -f
+repo sync -c -d -f -j5
 
 echo "Patching frameworks/base"
 cp patches/frameworks_base.patch frameworks/base/frameworks_base.patch
